@@ -13,6 +13,7 @@ public class ChatClient {
     private BufferedReader reader;
     private BufferedWriter writer;
 
+
     // 发送消息给服务器
     public void send(String msg) throws IOException {
         if (!socket.isOutputShutdown()) {

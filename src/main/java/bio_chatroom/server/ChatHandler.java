@@ -5,11 +5,11 @@ import java.net.Socket;
 
 public class ChatHandler implements Runnable {
 
-    private ChatServer server;
+    private ChatServer chatServer;
     private Socket socket;
 
     public ChatHandler(ChatServer server, Socket socket) {
-        this.server = server;
+        this.chatServer = server;
         this.socket = socket;
     }
 
@@ -17,7 +17,7 @@ public class ChatHandler implements Runnable {
     public void run() {
         try {
             // 存储新上线用户
-            server.addClient(socket);
+            chatServer.addClient(socket);
 
             // 读取用户发送的消息
             BufferedReader reader = new BufferedReader(
@@ -25,15 +25,16 @@ public class ChatHandler implements Runnable {
             );
 
             String msg = null;
+            // readLine()方法在进行读取一行时，只有遇到回车(\r)或者换行符(\n)才会返回读取结果
+            // 当realLine()读取到的内容为空时，并不会返回 null，而是会一直阻塞
+            // 只有当读取的输入流发生错误或者被关闭时，readLine()方法才会返回null
             while ((msg = reader.readLine()) != null) {
                 String fwdMsg = "客户端[" + socket.getPort() + "]: " + msg + "\n";
                 System.out.print(fwdMsg);
-
                 // 将消息转发给聊天室里在线的其他用户
-                server.forwardMessage(socket, fwdMsg);
-
+                chatServer.forwardMessage(socket, fwdMsg);
                 // 检查用户是否准备退出
-                if (server.readyToQuit(msg)) {
+                if (chatServer.readyToQuit(msg)) {
                     break;
                 }
             }
@@ -41,10 +42,12 @@ public class ChatHandler implements Runnable {
             e.printStackTrace();
         } finally {
             try {
-                server.removeClient(socket);
+                // 用户退出后，将id从在线列表map中移除
+                chatServer.removeClient(socket);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         }
     }
 }
