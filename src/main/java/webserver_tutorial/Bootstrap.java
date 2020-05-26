@@ -1,4 +1,4 @@
-package main.java.webserver_tutorial;
+package webserver_tutorial;
 
 import webserver_tutorial.connector.Connector;
 

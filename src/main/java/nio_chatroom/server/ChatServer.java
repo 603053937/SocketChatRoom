@@ -1,4 +1,4 @@
-package main.java.nio_chatroom.server;
+package nio_chatroom.server;
 
 import java.io.Closeable;
 import java.io.IOException;

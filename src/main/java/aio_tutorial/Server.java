@@ -1,4 +1,4 @@
-package main.java.aio_tutorial;
+package aio_tutorial;
 
 import java.io.*;
 import java.net.InetSocketAddress;

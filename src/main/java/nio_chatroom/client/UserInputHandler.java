@@ -1,4 +1,4 @@
-package main.java.nio_chatroom.client;
+package nio_chatroom.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;

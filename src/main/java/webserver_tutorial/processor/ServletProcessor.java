@@ -1,4 +1,4 @@
-package main.java.webserver_tutorial.processor;
+package webserver_tutorial.processor;
 
 import webserver_tutorial.connector.*;
 

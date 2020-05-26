@@ -1,4 +1,4 @@
-package main.java.nio_file_copy;
+package nio_file_copy;
 
 import java.io.*;
 import java.nio.ByteBuffer;

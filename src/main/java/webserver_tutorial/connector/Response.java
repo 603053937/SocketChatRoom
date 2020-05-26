@@ -1,4 +1,4 @@
-package main.java.webserver_tutorial.connector;
+package webserver_tutorial.connector;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletResponse;

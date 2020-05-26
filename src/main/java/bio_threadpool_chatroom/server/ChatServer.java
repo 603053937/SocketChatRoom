@@ -1,4 +1,4 @@
-package main.java.bio_threadpool_chatroom.server;
+package bio_threadpool_chatroom.server;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

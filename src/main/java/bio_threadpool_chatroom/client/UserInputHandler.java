@@ -1,4 +1,4 @@
-package main.java.bio_threadpool_chatroom.client;
+package bio_threadpool_chatroom.client;
 
 import java.io.*;
 
