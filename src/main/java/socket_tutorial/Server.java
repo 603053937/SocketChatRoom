@@ -1,4 +1,4 @@
-package testsocket;
+package main.java.socket_tutorial;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -8,7 +8,7 @@ public class Server {
     public static void main(String[] args) {
 
         final String QUIT = "quit";
-        final int DEFAULT_PORT = 8080;
+        final int DEFAULT_PORT = 8888;
         ServerSocket serverSocket = null;
 
         try {
@@ -19,8 +19,7 @@ public class Server {
             while (true) {
                 // 等待客户端连接
                 Socket socket = serverSocket.accept();
-                System.out.println("客户端[" + socket.getPort() + "]已经连接");
-                // 装饰器模式
+                System.out.println("客户端[" + socket.getPort() + "]已连接");
                 BufferedReader reader = new BufferedReader(
                         new InputStreamReader(socket.getInputStream())
                 );
@@ -30,20 +29,18 @@ public class Server {
 
                 String msg = null;
                 while ((msg = reader.readLine()) != null) {
-
                     // 读取客户端发送的消息
-                    System.out.println("客户端[" + socket.getPort() + "]:" + msg);
+                    System.out.println("客户端[" + socket.getPort() + "]: " + msg);
 
-                    // 回复客户端
-                    writer.write("服务器:" + msg + "\n");
+                    // 回复客户发送的消息
+                    writer.write("服务器: " + msg + "\n");
                     writer.flush();
 
-                    // 查看客户是否退出
+                    // 查看客户端是否退出
                     if (QUIT.equals(msg)) {
-                        System.out.println("客户端["+socket.getPort()+"]已断开连接");
+                        System.out.println("客户端[" + socket.getPort() + "]已断开连接");
                         break;
                     }
-
                 }
             }
         } catch (IOException e) {
@@ -58,5 +55,6 @@ public class Server {
                 }
             }
         }
+
     }
 }

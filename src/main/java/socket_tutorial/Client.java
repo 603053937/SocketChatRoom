@@ -1,4 +1,4 @@
-package testsocket;
+package main.java.socket_tutorial;
 
 import java.io.*;
 import java.net.Socket;
@@ -8,15 +8,15 @@ public class Client {
 
         final String QUIT = "quit";
         final String DEFAULT_SERVER_HOST = "127.0.0.1";
-        final int DEFAULT_SERVER_PORT = 8080;
-        Socket socket;
+        final int DEFAULT_SERVER_PORT = 8888;
+        Socket socket = null;
         BufferedWriter writer = null;
 
         try {
             // 创建socket
             socket = new Socket(DEFAULT_SERVER_HOST, DEFAULT_SERVER_PORT);
 
-            // 装饰器模式
+            // 创建IO流
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(socket.getInputStream())
             );
@@ -24,8 +24,9 @@ public class Client {
                     new OutputStreamWriter(socket.getOutputStream())
             );
 
-            // 用户输入信息
-            BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in));
+            // 等待用户输入信息
+            BufferedReader consoleReader =
+                    new BufferedReader(new InputStreamReader(System.in));
             while (true) {
                 String input = consoleReader.readLine();
 
@@ -48,7 +49,6 @@ public class Client {
         } finally {
             if (writer != null) {
                 try {
-                    // 用这种方法，可以关闭socket同时并执行flush()
                     writer.close();
                     System.out.println("关闭socket");
                 } catch (IOException e) {
@@ -56,5 +56,6 @@ public class Client {
                 }
             }
         }
+
     }
 }
