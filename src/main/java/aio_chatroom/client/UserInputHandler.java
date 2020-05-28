@@ -3,24 +3,31 @@ package aio_chatroom.client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.channels.AsynchronousSocketChannel;
 
+public class UserInputHandler implements Runnable {
 
-public class UserInputHandler {
-    private ChatClient client;
+    private ChatClient chatClient;
 
-    public UserInputHandler(ChatClient client) {
-        this.client = client;
+    public UserInputHandler(ChatClient chatClient) {
+        this.chatClient = chatClient;
     }
 
-    public void handle() {
+    @Override
+    public void run() {
         try {
             // 等待用户输入消息
-            BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in));
+            BufferedReader consoleReader =
+                    new BufferedReader(new InputStreamReader(System.in));
             while (true) {
                 String input = consoleReader.readLine();
-                client.send(input);
-                if ("quit".equalsIgnoreCase(input)) {
+
+                // 向服务器发送消息
+                if (input != null) {
+                    chatClient.send(input);
+                }
+
+                // 检查用户是否准备退出
+                if (chatClient.readyToQuit(input)) {
                     break;
                 }
             }

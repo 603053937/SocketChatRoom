@@ -6,6 +6,7 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -22,7 +23,7 @@ public class ChatClient {
     private ByteBuffer rBuffer = ByteBuffer.allocate(BUFFER);
     private ByteBuffer wBuffer = ByteBuffer.allocate(BUFFER);
     private Selector selector;
-    private Charset charset = Charset.forName("UTF-8");
+    private Charset charset = StandardCharsets.UTF_8;
 
     public ChatClient() {
         this(DEFAULT_SERVER_HOST, DEFAULT_SERVER_PORT);
@@ -53,10 +54,13 @@ public class ChatClient {
             client.configureBlocking(false);
 
             selector = Selector.open();
+            // 注册selector，设置其对connect事件感兴趣
             client.register(selector, SelectionKey.OP_CONNECT);
+            // 向服务器发送连接请求
             client.connect(new InetSocketAddress(host, port));
 
             while (true) {
+                // 监听通道
                 selector.select();
                 Set<SelectionKey> selectionKeys = selector.selectedKeys();
                 for (SelectionKey key : selectionKeys) {
@@ -78,9 +82,13 @@ public class ChatClient {
         // CONNECT事件 - 连接就绪事件
         if (key.isConnectable()) {
             SocketChannel client = (SocketChannel) key.channel();
+            // 连接是否处于就绪
             if (client.isConnectionPending()) {
+                // 完成建立连接的过程
                 client.finishConnect();
                 // 处理用户的输入
+                // 处理输入的线程必须是阻塞的，因为用户随时都可能输入、
+                // 非阻塞线程会使用户输入时需要等待，影响体验
                 new Thread(new UserInputHandler(this)).start();
             }
             client.register(selector, SelectionKey.OP_READ);

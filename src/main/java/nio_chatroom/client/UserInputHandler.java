@@ -16,8 +16,7 @@ public class UserInputHandler implements Runnable {
     public void run() {
         try {
             // 等待用户输入消息
-            BufferedReader consoleReader =
-                    new BufferedReader(new InputStreamReader(System.in));
+            BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in));
             while (true) {
                 String input = consoleReader.readLine();
 
